@@ -74,7 +74,7 @@ func (v *GetVero) IdentifyUserWithEmail(id string, e string, args ...interface{}
 
 }
 
-// IdentifyUserWithoutEmail sends an identify request
+// IdentifyUserWithoutEmail sends an identify request without the email
 func (v *GetVero) IdentifyUserWithoutEmail(id string, args ...interface{}) error {
 
 	l, err := checkDataLength(false, args)

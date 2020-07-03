@@ -38,7 +38,7 @@ func (v *GetVero) AddTags(id string, tags []string) error {
 
 }
 
-// RemoveTags adds tags to a user
+// RemoveTags removes tags to a user
 func (v *GetVero) RemoveTags(id string, tags []string) error {
 
 	a := getveroTag{
