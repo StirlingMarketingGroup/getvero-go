@@ -34,10 +34,10 @@ func checkDataLength(eventWithDataAndExtras bool, a []interface{}) (int, error) 
 
 }
 
-// sendsToVeroPost handles all the post requests to vero
-func sendToVeroPost(d []byte, url string) error {
+// sendToVero sends the request to getvero
+func sendToVero(t string, d []byte, url string) error {
 
-	req, err := http.NewRequest("POST", url, bytes.NewBuffer(d))
+	req, err := http.NewRequest(t, url, bytes.NewBuffer(d))
 	if err != nil {
 		return err
 	}
@@ -66,34 +66,16 @@ func sendToVeroPost(d []byte, url string) error {
 
 }
 
+// sendsToVeroPost handles all the post requests to vero
+func sendToVeroPost(d []byte, url string) error {
+
+	return sendToVero("POST", d, url)
+
+}
+
 // sendToVeroPut handles all put requests to vero
 func sendToVeroPut(d []byte, url string) error {
 
-	req, err := http.NewRequest("PUT", url, bytes.NewBuffer(d))
-	if err != nil {
-		return err
-	}
-
-	req.Header.Add("content-type", "application/json")
-
-	res, err := http.DefaultClient.Do(req)
-	if err != nil {
-		return err
-	}
-
-	defer res.Body.Close()
-	c, err := ioutil.ReadAll(res.Body)
-	if err != nil {
-		return err
-	}
-
-	var r getveroResponse
-	json.Unmarshal(c, &r)
-
-	if r.Status != http.StatusOK {
-		return errors.New(r.Message)
-	}
-
-	return nil
+	return sendToVero("PUT", d, url)
 
 }
