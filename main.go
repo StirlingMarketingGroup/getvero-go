@@ -6,6 +6,7 @@ import (
 	"errors"
 	"io/ioutil"
 	"net/http"
+	"strconv"
 )
 
 // GetVero keeps around the authtoken
@@ -31,6 +32,19 @@ func checkDataLength(eventWithDataAndExtras bool, a []interface{}) (int, error) 
 	}
 
 	return l, nil
+
+}
+
+func checkID(id interface{}) (string, error) {
+
+	switch id.(type) {
+	case string:
+		return id.(string), nil
+	case int:
+		return strconv.Itoa(id.(int)), nil
+	default:
+		return "", errors.New("id must be of type string or int")
+	}
 
 }
 

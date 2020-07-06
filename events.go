@@ -20,12 +20,17 @@ type getveroEvent struct {
 }
 
 // TrackEvent tracks just the event name
-func (v *GetVero) TrackEvent(id string, email string, event string) error {
+func (v *GetVero) TrackEvent(id interface{}, email string, event string) error {
+
+	uID, err := checkID(id)
+	if err != nil {
+		return err
+	}
 
 	e := getveroEvent{
 		AuthToken: v.AuthToken,
 		Identity: getveroEventIdentity{
-			ID:    id,
+			ID:    uID,
 			Email: email,
 		},
 		EventName: event,
@@ -49,7 +54,12 @@ func (v *GetVero) TrackEvent(id string, email string, event string) error {
 }
 
 // TrackEventWithData tracks the event with just event name and data
-func (v *GetVero) TrackEventWithData(id string, email string, event string, args ...interface{}) error {
+func (v *GetVero) TrackEventWithData(id interface{}, email string, event string, args ...interface{}) error {
+
+	uID, err := checkID(id)
+	if err != nil {
+		return err
+	}
 
 	l, err := checkDataLength(false, args)
 	if err != nil {
@@ -64,7 +74,7 @@ func (v *GetVero) TrackEventWithData(id string, email string, event string, args
 	e := getveroEvent{
 		AuthToken: v.AuthToken,
 		Identity: getveroEventIdentity{
-			ID:    id,
+			ID:    uID,
 			Email: email,
 		},
 		EventName: event,
@@ -88,7 +98,12 @@ func (v *GetVero) TrackEventWithData(id string, email string, event string, args
 }
 
 // TrackEventWithExtra tracks event with just event name and extra
-func (v *GetVero) TrackEventWithExtra(id string, email string, event string, args ...interface{}) error {
+func (v *GetVero) TrackEventWithExtra(id interface{}, email string, event string, args ...interface{}) error {
+
+	uID, err := checkID(id)
+	if err != nil {
+		return err
+	}
 
 	l, err := checkDataLength(false, args)
 	if err != nil {
@@ -103,7 +118,7 @@ func (v *GetVero) TrackEventWithExtra(id string, email string, event string, arg
 	e := getveroEvent{
 		AuthToken: v.AuthToken,
 		Identity: getveroEventIdentity{
-			ID:    id,
+			ID:    uID,
 			Email: email,
 		},
 		EventName: event,
@@ -127,9 +142,14 @@ func (v *GetVero) TrackEventWithExtra(id string, email string, event string, arg
 }
 
 // TrackEventWithDataAndExtra tracks event with event name, data, and extra
-func (v *GetVero) TrackEventWithDataAndExtra(id string, email string, event string, args ...interface{}) error {
+func (v *GetVero) TrackEventWithDataAndExtra(id interface{}, email string, event string, args ...interface{}) error {
 
-	_, err := checkDataLength(true, args)
+	uID, err := checkID(id)
+	if err != nil {
+		return err
+	}
+
+	_, err = checkDataLength(true, args)
 	if err != nil {
 		return err
 	}
@@ -140,7 +160,7 @@ func (v *GetVero) TrackEventWithDataAndExtra(id string, email string, event stri
 	e := getveroEvent{
 		AuthToken: v.AuthToken,
 		Identity: getveroEventIdentity{
-			ID:    id,
+			ID:    uID,
 			Email: email,
 		},
 		EventName: event,

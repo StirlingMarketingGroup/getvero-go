@@ -36,7 +36,12 @@ type getveroDelete struct {
 }
 
 // IdentifyUserWithEmail sends an identify request
-func (v *GetVero) IdentifyUserWithEmail(id string, e string, args ...interface{}) error {
+func (v *GetVero) IdentifyUserWithEmail(id interface{}, e string, args ...interface{}) error {
+
+	uID, err := checkID(id)
+	if err != nil {
+		return err
+	}
 
 	l, err := checkDataLength(false, args)
 	if err != nil {
@@ -50,7 +55,7 @@ func (v *GetVero) IdentifyUserWithEmail(id string, e string, args ...interface{}
 
 	ident := getveroIdentify{
 		AuthToken: v.AuthToken,
-		ID:        id,
+		ID:        uID,
 		Email:     e,
 		Data:      d,
 	}
@@ -75,7 +80,12 @@ func (v *GetVero) IdentifyUserWithEmail(id string, e string, args ...interface{}
 }
 
 // IdentifyUserWithoutEmail sends an identify request without the email
-func (v *GetVero) IdentifyUserWithoutEmail(id string, args ...interface{}) error {
+func (v *GetVero) IdentifyUserWithoutEmail(id interface{}, args ...interface{}) error {
+
+	uID, err := checkID(id)
+	if err != nil {
+		return err
+	}
 
 	l, err := checkDataLength(false, args)
 	if err != nil {
@@ -89,7 +99,7 @@ func (v *GetVero) IdentifyUserWithoutEmail(id string, args ...interface{}) error
 
 	ident := &getveroIdentify{
 		AuthToken: v.AuthToken,
-		ID:        id,
+		ID:        uID,
 		Email:     "",
 		Data:      d,
 	}
@@ -114,12 +124,22 @@ func (v *GetVero) IdentifyUserWithoutEmail(id string, args ...interface{}) error
 }
 
 // Alias changes a users id
-func (v *GetVero) Alias(id string, newID string) error {
+func (v *GetVero) Alias(id interface{}, newID interface{}) error {
+
+	uID, err := checkID(id)
+	if err != nil {
+		return err
+	}
+
+	newUID, err := checkID(newID)
+	if err != nil {
+		return err
+	}
 
 	a := &getveroAlias{
 		AuthToken: v.AuthToken,
-		ID:        id,
-		NewID:     newID,
+		ID:        uID,
+		NewID:     newUID,
 	}
 	b, err := json.Marshal(a)
 
@@ -142,11 +162,16 @@ func (v *GetVero) Alias(id string, newID string) error {
 }
 
 // Unsubscribe removes user from email list
-func (v *GetVero) Unsubscribe(id string) error {
+func (v *GetVero) Unsubscribe(id interface{}) error {
+
+	uID, err := checkID(id)
+	if err != nil {
+		return err
+	}
 
 	unsub := &getveroUnsubscribe{
 		AuthToken: v.AuthToken,
-		ID:        id,
+		ID:        uID,
 	}
 	b, err := json.Marshal(unsub)
 
@@ -169,11 +194,16 @@ func (v *GetVero) Unsubscribe(id string) error {
 }
 
 // Resubscribe adds user back to mailing list
-func (v *GetVero) Resubscribe(id string) error {
+func (v *GetVero) Resubscribe(id interface{}) error {
+
+	uID, err := checkID(id)
+	if err != nil {
+		return err
+	}
 
 	resub := &getveroResubscribe{
 		AuthToken: v.AuthToken,
-		ID:        id,
+		ID:        uID,
 	}
 	b, err := json.Marshal(resub)
 
@@ -196,11 +226,16 @@ func (v *GetVero) Resubscribe(id string) error {
 }
 
 // Delete removes user from getvero
-func (v *GetVero) Delete(id string) error {
+func (v *GetVero) Delete(id interface{}) error {
+
+	uID, err := checkID(id)
+	if err != nil {
+		return err
+	}
 
 	delete := &getveroDelete{
 		AuthToken: v.AuthToken,
-		ID:        id,
+		ID:        uID,
 	}
 	b, err := json.Marshal(delete)
 
